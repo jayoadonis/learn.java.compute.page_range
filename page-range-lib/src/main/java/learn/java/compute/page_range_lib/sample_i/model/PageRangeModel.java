@@ -40,14 +40,18 @@ public class PageRangeModel {
         else if( srcRawRangeStrParts.length == 2 && !srcRawRangeStrParts[0].isBlank() ) {
           final short start = Short.parseShort(srcRawRangeStrParts[0]);
           final short end = Short.parseShort(srcRawRangeStrParts[1]);
+          if( start > end ) throw new RuntimeException(
+            String.format("Invalid Number ranges parsing: %d-%d", start, end)
+          );
           resultRanges.add(
             new Short[]{ start, end }
           );
         }
       }
-      catch( final NumberFormatException nFEx ) {
-        nFEx.printStackTrace(System.err);
-        System.out.printf( "%s \r\n", nFEx.getLocalizedMessage() );
+      catch( final RuntimeException uncheckException ) {
+        uncheckException.printStackTrace(System.err);
+        System.err.printf( "Error: %s \r\n", uncheckException.getLocalizedMessage() );
+        throw uncheckException;
       }
     }
 

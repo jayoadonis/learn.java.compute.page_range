@@ -26,10 +26,6 @@ public class TestPageRangeModel {
 
     List<Short[]> parsedRanges = pRModel.parsePageRanges();
 
-    for (Short[] parsedRange : parsedRanges) {
-      System.out.print(Arrays.toString(parsedRange));
-    }
-
     Assertions.assertEquals(5, parsedRanges.size(), "Expected 4 ranges to be parsed.");
     Assertions.assertArrayEquals(new Short[]{1,1}, parsedRanges.get(0), "First range mismatch.");
     Assertions.assertArrayEquals(new Short[]{5,5}, parsedRanges.get(1), "Second range mismatch.");
@@ -49,17 +45,39 @@ public class TestPageRangeModel {
     Assertions.assertEquals(expectedOutput, formattedRanges, "Formatted range output mismatch.");
   }
 
+//  @Test
+//  public void testInvalidInput() {
+//    PageRangeModel pRModel = new PageRangeModel();
+//    pRModel.setPageRange("-1,abc,5,8-10,,12-15");
+//
+//    List<Short[]> parsedRanges = pRModel.parsePageRanges();
+//
+//    Assertions.assertEquals(3, parsedRanges.size(), "Expected only valid ranges to be parsed.");
+//    Assertions.assertArrayEquals(new Short[]{5,5}, parsedRanges.get(0), "First valid range mismatch.");
+//    Assertions.assertArrayEquals(new Short[]{8,10}, parsedRanges.get(1), "Second valid range mismatch.");
+//    Assertions.assertArrayEquals(new Short[]{12,15}, parsedRanges.get(2), "Third valid range mismatch.");
+//  }
+
   @Test
-  public void testInvalidInput() {
+  public void testParsePageRangesNonNumeric() {
     PageRangeModel pRModel = new PageRangeModel();
     pRModel.setPageRange("-1,abc,5,8-10,,12-15");
 
-    List<Short[]> parsedRanges = pRModel.parsePageRanges();
+    Assertions.assertThrowsExactly(
+      NumberFormatException.class,
+      pRModel::parsePageRanges
+    );
+  }
 
-    Assertions.assertEquals(3, parsedRanges.size(), "Expected only valid ranges to be parsed.");
-    Assertions.assertArrayEquals(new Short[]{5,5}, parsedRanges.get(0), "First valid range mismatch.");
-    Assertions.assertArrayEquals(new Short[]{8,10}, parsedRanges.get(1), "Second valid range mismatch.");
-    Assertions.assertArrayEquals(new Short[]{12,15}, parsedRanges.get(2), "Third valid range mismatch.");
+  @Test
+  public void tryInvalidRangesInvalidRange() {
+    PageRangeModel pRModel = new PageRangeModel();
+    pRModel.setPageRange("-1,5,8-10,12-15,20-16");
+
+    Assertions.assertThrowsExactly(
+      RuntimeException.class,
+      pRModel::parsePageRanges
+    );
   }
 }
 
