@@ -1,0 +1,8 @@
+.gradle/
+.vscode/
+.idea/
+
+build/
+out/
+output/
+destinition/
