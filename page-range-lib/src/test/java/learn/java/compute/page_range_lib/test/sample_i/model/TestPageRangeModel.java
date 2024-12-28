@@ -59,7 +59,7 @@ public class TestPageRangeModel {
 //  }
 
   @Test
-  public void testParsePageRangesNonNumeric() {
+  public void testNonNumericParsePageRanges() {
     PageRangeModel pRModel = new PageRangeModel();
     pRModel.setPageRange("-1,abc,5,8-10,,12-15");
 
@@ -70,7 +70,7 @@ public class TestPageRangeModel {
   }
 
   @Test
-  public void tryInvalidRangesInvalidRange() {
+  public void testInvalidParsePageRanges() {
     PageRangeModel pRModel = new PageRangeModel();
     pRModel.setPageRange("-1,5,8-10,12-15,20-16");
 
